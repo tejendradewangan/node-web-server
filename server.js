@@ -25,9 +25,9 @@ app.use((req,res,next) =>{
 	next();
 });
 
-app.use((req,res,next) =>{
-	res.send('We are in maintance');
-});
+// app.use((req,res,next) =>{
+// 	res.send('We are in maintance');
+// });
 
 app.use(express.static(__dirname+'/public'));
 

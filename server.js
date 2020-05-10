@@ -6,18 +6,32 @@ const port = process.env.PORT || 3000;
 var app = express();
 
 hbs.registerPartials(__dirname + '/views/partials')
-app.set('view engine', 'hbs');
+app.set('view engine', 'html');
 
 
 hbs.registerHelper('getCurrentYear', () => {
     return new Date().getFullYear()
 });
 
-
 app.use((req, res, next) => {
     var now = new Date().toString();
-    var logger = console.log(`${now}: ${req.method} ${req.url}`);
+    var logger = `${now}: ${req.method} ${req.url}`;
+    console.log(logger);
     fs.appendFile('server.log', logger + '\n', (error) => {
+        if (error) {
+            console.log('Error : Log not inserted in server.log file');
+        }
+    });
+    next();
+});
+
+
+
+app.use('/client',(req, res, next) => {
+    var now = new Date().toString();
+    var logger = `${now}: ${req.method} ${req.url}`;
+    console.log(logger);
+    fs.appendFile('client.log', logger + '\n', (error) => {
         if (error) {
             console.log('Error : Log not inserted in server.log file');
         }
@@ -69,6 +83,9 @@ app.get('/bad', (req, res) => {
         "Status Code": "400"
     });
 });
+
+
+
 
 app.listen(port, () => {
     console.log(`Server is up on port ${port}`);
